@@ -1,10 +1,10 @@
 {
   "name": "html-patche",
-  "version": "1.0.10",
-  "description": "",
+  "version": "1.0.11",
+  "description": "A simple static site generator that uses ejs",
   "main": "index.js",
   "bin": {
-    "html-pache-2": "./bin/index.js"
+    "html-patche": "./bin/index.js"
   },
   "keywords": [
     "html",
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/BEN00262/html-patch.git"
   },
-  "author": "john kerama",
+  "author": "john kerama <johnnesta2018@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.26.1",
