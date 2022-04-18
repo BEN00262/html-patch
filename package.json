@@ -1,6 +1,6 @@
 {
   "name": "html-patche",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A simple static site generator that uses ejs",
   "main": "index.js",
   "bin": {
