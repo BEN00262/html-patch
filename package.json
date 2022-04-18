@@ -1,0 +1,34 @@
+{
+  "name": "html-patche",
+  "version": "1.0.9",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "html-pache-2": "./bin/index.js"
+  },
+  "keywords": [
+    "html",
+    "patch",
+    "html-patch",
+    "html-patche",
+    "templating",
+    "static site generator",
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BEN00262/html-patch.git"
+  },
+  "author": "john kerama",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "commander": "^9.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "express-ejs-layouts": "^2.5.1",
+    "node-html-parser": "^5.3.3",
+    "node-watch": "^0.7.3",
+    "pretty": "^2.0.0",
+    "socket.io": "^4.4.1"
+  }
+}

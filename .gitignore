@@ -1,0 +1,5 @@
+build
+/data
+/views
+/public
+node_modules
