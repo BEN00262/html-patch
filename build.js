@@ -1,7 +1,8 @@
-const {parse: parseHTML} = require('node-html-parser');
+const { parse: parseHTML} = require('node-html-parser');
 const path = require('path');
 const fs = require('fs');
 const ejs = require('ejs');
+const consola = require('consola');
 const prettifyHTML = require('pretty');
 const axios = require('axios');
 
@@ -19,9 +20,13 @@ const get_data = (data_endpoint) => {
                 .catch(err => reject(err))
         } else {
             // read from the data directory and the file should be valid json
-            resolve(
-                JSON.parse(fs.readFileSync(path.join(DIRNAME, DATA_DIRECTORY, data_endpoint), 'utf8'))
-            );
+            const data_directory_path = path.join(DIRNAME, DATA_DIRECTORY, data_endpoint);
+
+            if (fs.existsSync(data_directory_path)) {
+                resolve(JSON.parse(fs.readFileSync(data_directory_path, 'utf8')));
+            }
+
+            reject('Data directory does not exist');
         }
     });
 }
@@ -49,22 +54,23 @@ const build_file = (file_name, file_content) => {
 // move the public folder around :)
 const move_as_is_folders = (src_folder = PUBLIC_DIRECTORY, dest = ".") => {
     let exists = fs.existsSync(src_folder);
-    let stats = exists && fs.statSync(src_folder);
 
-    let isDirectory = exists && stats.isDirectory();
+    if (exists) {
+        let isDirectory = fs.statSync(src_folder).isDirectory();
 
-    if (isDirectory) {
-        let dest_folder = build_folder(src_folder);
+        if (isDirectory) {
+            let dest_folder = build_folder(src_folder);
 
-        for (const src of fs.readdirSync(src_folder)) {
-            move_as_is_folders(
-                path.join(DIRNAME, src_folder, src), 
-                path.join(dest_folder, src)
-            );
+            for (const src of fs.readdirSync(src_folder)) {
+                move_as_is_folders(
+                    path.join(DIRNAME, src_folder, src), 
+                    path.join(dest_folder, src)
+                );
+            }
+
+        } else {
+            fs.copyFileSync(src_folder, dest);
         }
-
-    } else {
-        fs.copyFileSync(src_folder, dest);
     }
 }
 
@@ -153,6 +159,7 @@ function rearrange_script_styles_links(root_code, template_code) {
 
     // for scripts we append to the body
     let body = to_node.querySelector('body');
+
      // intelligently append the script
     for (const _script of script) {
         const existing_script = body.querySelector(`script[src="${_script.getAttribute('src')}"]`);
@@ -337,7 +344,6 @@ const crawl_pages = async ({ template, root_file }) => {
 
 module.exports = () => {
     crawl_pages({ template: 'layout'})
-    .then(_ => {
-        move_as_is_folders();
-    })
+    .then(_ => { move_as_is_folders() })
+    .catch(err => { consola.error(err.message) })
 }

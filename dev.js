@@ -4,6 +4,7 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const prettifyHTML = require('pretty');
+const consola = require('consola');
 const { parse: parseHTML } = require('node-html-parser');
 const { Server: SocketIOServer } = require('socket.io');
 const { Worker } = require('worker_threads');
@@ -51,7 +52,7 @@ app.get("*", (req, res) => {
 
 module.exports = async () => {
     http_server.listen(DEV_PORT, () => {
-        console.log(`dev server is listening at http://localhost:${DEV_PORT}`);
+        consola.success(`Dev server is listening at http://localhost:${DEV_PORT}`);
     })
 
     ;(() => {

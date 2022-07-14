@@ -1,6 +1,6 @@
 {
   "name": "html-patche",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A simple static site generator that uses ejs",
   "main": "index.js",
   "bin": {
@@ -23,6 +23,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "commander": "^9.2.0",
+    "consola": "^2.15.3",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-ejs-layouts": "^2.5.1",
