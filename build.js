@@ -330,7 +330,7 @@ module.exports = () => {
     .then(_ => { 
         move_as_is_folders();
         
-        // bundle the files and then we are done :)
+        //FIXME: bundle the files and then we are done :)
     })
     .catch(err => { consola.error(err.message) })
 }
