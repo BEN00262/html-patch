@@ -4,32 +4,13 @@ const fs = require('fs');
 const ejs = require('ejs');
 const consola = require('consola');
 const prettifyHTML = require('pretty');
-const axios = require('axios');
+
+const { get_data, patch_get_data_to_be_awaitable } = require('./utils');
 
 const DIRNAME = process.cwd(); // this is the current directory
-const DATA_DIRECTORY = "data"; // only json data files are supported
 const PUBLIC_DIRECTORY = "public"; // place css, images, js files here
 const BUILD_FOLDER = "build"
 
-// we can fetch the data from a url or the filesystem ( if the url is a file )
-const get_data = (data_endpoint) => {
-    return new Promise((resolve, reject) => {
-        if (data_endpoint.startsWith('http')) {
-            axios.get(data_endpoint)
-                .then(({ data }) => resolve(data))
-                .catch(err => reject(err))
-        } else {
-            // read from the data directory and the file should be valid json
-            const data_directory_path = path.join(DIRNAME, DATA_DIRECTORY, data_endpoint);
-
-            if (fs.existsSync(data_directory_path)) {
-                resolve(JSON.parse(fs.readFileSync(data_directory_path, 'utf8')));
-            }
-
-            reject('Data directory does not exist');
-        }
-    });
-}
 
 // create the build folder to start damping the files to
 const build_folder = (folder_name) => {
@@ -222,9 +203,11 @@ const crawl_pages = async ({ template, root_file }) => {
             if (!crawled_page) {
                 root = parseHTML(
                     await ejs.render(
-                        fs.readFileSync(
-                            requested_path(start_link.replace(/\\/g, '/')), 
-                            'utf8'
+                        patch_get_data_to_be_awaitable(
+                            fs.readFileSync(
+                                requested_path(start_link.replace(/\\/g, '/')), 
+                                'utf8'
+                            ),
                         ),
                         { get_data },
                         { async: true }
@@ -344,6 +327,10 @@ const crawl_pages = async ({ template, root_file }) => {
 
 module.exports = () => {
     crawl_pages({ template: 'layout'})
-    .then(_ => { move_as_is_folders() })
+    .then(_ => { 
+        move_as_is_folders();
+        
+        //FIXME: bundle the files and then we are done :)
+    })
     .catch(err => { consola.error(err.message) })
 }

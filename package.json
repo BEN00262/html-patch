@@ -6,6 +6,9 @@
   "bin": {
     "html-patche": "./bin/index.js"
   },
+  "scripts": {
+    "updateLink": "npm rm html-patche -g && npm link"
+  },
   "keywords": [
     "html",
     "patch",
@@ -29,7 +32,9 @@
     "express-ejs-layouts": "^2.5.1",
     "node-html-parser": "^5.3.3",
     "node-watch": "^0.7.3",
+    "open": "^8.4.0",
     "pretty": "^2.0.0",
+    "serve-favicon": "^2.5.0",
     "socket.io": "^4.4.1"
   }
 }
